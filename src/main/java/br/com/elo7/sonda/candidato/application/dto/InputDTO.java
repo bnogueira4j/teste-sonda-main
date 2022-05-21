@@ -1,4 +1,4 @@
-package br.com.elo7.sonda.candidato.dto;
+package br.com.elo7.sonda.candidato.application.dto;
 
 import java.util.List;
 

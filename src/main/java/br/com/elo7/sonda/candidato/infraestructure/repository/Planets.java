@@ -1,8 +1,8 @@
-package br.com.elo7.sonda.candidato.persistence;
+package br.com.elo7.sonda.candidato.infraestructure.repository;
 
 import java.util.Optional;
 
-import br.com.elo7.sonda.candidato.model.Planet;
+import br.com.elo7.sonda.candidato.core.domain.Planet;
 
 public interface Planets {
 

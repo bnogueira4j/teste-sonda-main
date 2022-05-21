@@ -1,8 +1,8 @@
-package br.com.elo7.sonda.candidato.persistence;
+package br.com.elo7.sonda.candidato.infraestructure.repository;
 
 import java.util.Optional;
 
-import br.com.elo7.sonda.candidato.model.Probe;
+import br.com.elo7.sonda.candidato.core.domain.Probe;
 
 public interface Probes {
 
