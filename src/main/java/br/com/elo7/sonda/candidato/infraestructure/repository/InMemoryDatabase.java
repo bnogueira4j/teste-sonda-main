@@ -1,4 +1,4 @@
-package br.com.elo7.sonda.candidato.persistence;
+package br.com.elo7.sonda.candidato.infraestructure.repository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
-import br.com.elo7.sonda.candidato.model.Planet;
-import br.com.elo7.sonda.candidato.model.Probe;
+import br.com.elo7.sonda.candidato.core.domain.Planet;
+import br.com.elo7.sonda.candidato.core.domain.Probe;
 
 @Component
 class InMemoryDatabase {

@@ -1,4 +1,4 @@
-package br.com.elo7.sonda.candidato.model;
+package br.com.elo7.sonda.candidato.core.domain;
 
 public class Planet {
 	private int id;
