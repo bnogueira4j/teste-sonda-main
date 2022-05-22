@@ -1,4 +1,4 @@
-package br.com.elo7.sonda.candidato.infraestructure;
+package br.com.elo7.sonda.candidato;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
