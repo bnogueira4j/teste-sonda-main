@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.elo7.sonda.candidato.core.gateways.AbstractProbeGateway;
+import br.com.elo7.sonda.candidato.core.repository.IPlanetRepository;
+import br.com.elo7.sonda.candidato.core.repository.IProbeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +16,20 @@ import br.com.elo7.sonda.candidato.core.domain.Command;
 import br.com.elo7.sonda.candidato.core.domain.Direction;
 import br.com.elo7.sonda.candidato.core.domain.Planet;
 import br.com.elo7.sonda.candidato.core.domain.Probe;
-import br.com.elo7.sonda.candidato.infraestructure.repository.Planets;
-import br.com.elo7.sonda.candidato.infraestructure.repository.Probes;
 
 @Service
 public class ProbeGateway implements AbstractProbeGateway {
 	@Autowired
-	private Planets planets;
+	private IPlanetRepository planetRepository;
 	@Autowired
-	private Probes probes;
+	private IProbeRepository probeRepository;
 	
 	public List<Probe> landProbes(InputDTO input) {
 		Planet planet = concertPlanet(input);
-		planets.save(planet);
+		final var savedPlanet = planetRepository.save(planet);
 		
-		List<Probe> convertedProbes = convertAndMoveProbes(input, planet);
-		convertedProbes.forEach(probe -> probes.save(probe));
+		List<Probe> convertedProbes = convertAndMoveProbes(input, savedPlanet);
+		convertedProbes.forEach(probe -> probeRepository.save(probe));
 		
 		return convertedProbes;
 	}

@@ -1,40 +1,24 @@
 package br.com.elo7.sonda.candidato.core.domain;
 
-public class Probe {
-	private int id;
-	private int positionX;
-	private int positionY;
-	private Direction direction;
-	private Planet planet;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getPositionX() {
-		return positionX;
-	}
-	public void setPositionX(int positionX) {
-		this.positionX = positionX;
-	}
-	public int getPositionY() {
-		return positionY;
-	}
-	public void setPositionY(int positionY) {
-		this.positionY = positionY;
-	}
-	public Direction getDirection() {
-		return direction;
-	}
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
-	public Planet getPlanet() {
-		return planet;
-	}
-	public void setPlanet(Planet planet) {
-		this.planet = planet;
-	}
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Probe {
+	@Min(0)
+	private int id;
+	@NotEmpty
+	private int positionX;
+	@NotEmpty
+	private int positionY;
+	@NotEmpty
+	private Direction direction;
+	@NotEmpty
+	private Planet planet;
 }

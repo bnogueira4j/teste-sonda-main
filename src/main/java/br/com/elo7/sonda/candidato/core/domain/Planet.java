@@ -1,39 +1,20 @@
 package br.com.elo7.sonda.candidato.core.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Planet {
+	@Min(0)
 	private int id;
+	@NotEmpty
 	private int width;
+	@NotEmpty
 	private int height;
-	
-	@Override
-	public int hashCode() {
-		return id;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Planet) {
-			return ((Planet) obj).id == this.id;
-		}
-		return false;
-	}
-
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getWidth() {
-		return width;
-	}
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	public int getHeight() {
-		return height;
-	}
-	public void setHeight(int height) {
-		this.height = height;
-	}
 }
