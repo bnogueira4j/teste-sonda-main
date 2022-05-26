@@ -3,7 +3,6 @@ package br.com.elo7.sonda.candidato.infraestructure.probe.persistence;
 import br.com.elo7.sonda.candidato.domain.probe.Direction;
 import br.com.elo7.sonda.candidato.domain.probe.Probe;
 import br.com.elo7.sonda.candidato.infraestructure.planet.persistence.PlanetEntity;
-import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "PROBE")
-@Data
 public class ProbeEntity implements Serializable {
 
     @Id
@@ -45,6 +43,26 @@ public class ProbeEntity implements Serializable {
 
     public ProbeEntity() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public PlanetEntity getPlanet() {
+        return planet;
     }
 
     public static ProbeEntity from(final Probe probe) {

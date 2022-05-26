@@ -1,8 +1,6 @@
 package br.com.elo7.sonda.candidato.infraestructure.planet.persistence;
 
 import br.com.elo7.sonda.candidato.domain.planet.Planet;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +13,6 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "PLANET")
-@Data
-@NoArgsConstructor
 public class PlanetEntity implements Serializable {
 
     @Id
@@ -32,6 +28,18 @@ public class PlanetEntity implements Serializable {
         this.id = id;
         this.width = width;
         this.height = height;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public static PlanetEntity from(final Planet planet){
