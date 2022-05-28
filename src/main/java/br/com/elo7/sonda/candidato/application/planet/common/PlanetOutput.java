@@ -1,4 +1,4 @@
-package br.com.elo7.sonda.candidato.application.planet.retrieve.get;
+package br.com.elo7.sonda.candidato.application.planet.common;
 
 import br.com.elo7.sonda.candidato.domain.planet.Planet;
 

@@ -1,10 +1,10 @@
 package br.com.elo7.sonda.candidato.infraestructure.api.controller;
 
+import br.com.elo7.sonda.candidato.application.planet.common.PlanetOutput;
 import br.com.elo7.sonda.candidato.application.planet.create.CreatePlanetCommand;
 import br.com.elo7.sonda.candidato.application.planet.create.CreatePlanetUseCase;
 import br.com.elo7.sonda.candidato.application.planet.retrieve.get.GetPlanetByIdUseCase;
 import br.com.elo7.sonda.candidato.application.planet.retrieve.list.ListPlanetsUseCase;
-import br.com.elo7.sonda.candidato.application.planet.retrieve.list.PlanetListOutput;
 import br.com.elo7.sonda.candidato.infraestructure.api.PlanetAPI;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.CreatePlanetApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.PlanetApiOutput;
@@ -37,7 +37,7 @@ public class PlanetController implements PlanetAPI {
     }
 
     @GetMapping
-    public ResponseEntity<List<PlanetListOutput>> findAll() {
+    public ResponseEntity<List<PlanetOutput>> findAll() {
         return ResponseEntity.ok(listPlanetsUseCase.execute());
     }
 

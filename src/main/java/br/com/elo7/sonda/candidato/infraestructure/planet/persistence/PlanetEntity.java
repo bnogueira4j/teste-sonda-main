@@ -24,6 +24,10 @@ public class PlanetEntity implements Serializable {
     @Column(name = "height", nullable = false)
     private int height;
 
+    public PlanetEntity() {
+
+    }
+
     private PlanetEntity(final int id, final int width, final int height) {
         this.id = id;
         this.width = width;

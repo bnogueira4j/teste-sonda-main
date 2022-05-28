@@ -1,6 +1,7 @@
 package br.com.elo7.sonda.candidato.infraestructure.api;
 
-import br.com.elo7.sonda.candidato.application.probe.retrieve.list.ProbeListOutput;
+import br.com.elo7.sonda.candidato.application.probe.common.ProbeOutput;
+import br.com.elo7.sonda.candidato.infraestructure.probe.models.ControlProbeApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.probe.models.CreateProbeApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.probe.models.ProbeApiOutput;
 import org.springframework.http.MediaType;
@@ -17,14 +18,20 @@ import java.util.List;
 public interface ProbeAPI {
 
     @GetMapping("/{id}")
-    ProbeApiOutput getById(@PathVariable int id);
+    ResponseEntity<ProbeApiOutput> getById(@PathVariable int id);
 
     @GetMapping
-    ResponseEntity<List<ProbeListOutput>> findAll();
+    ResponseEntity<List<ProbeOutput>> findAll();
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     ResponseEntity<?> register(@RequestBody CreateProbeApiInput input);
+
+    @PostMapping(value = "/{id}/control",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    ResponseEntity<ProbeApiOutput> control(@PathVariable int id, @RequestBody ControlProbeApiInput input);
 }

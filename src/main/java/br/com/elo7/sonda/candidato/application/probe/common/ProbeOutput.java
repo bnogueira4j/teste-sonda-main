@@ -1,4 +1,4 @@
-package br.com.elo7.sonda.candidato.application.probe.retrieve.get;
+package br.com.elo7.sonda.candidato.application.probe.common;
 
 import br.com.elo7.sonda.candidato.domain.probe.Direction;
 import br.com.elo7.sonda.candidato.domain.probe.Probe;

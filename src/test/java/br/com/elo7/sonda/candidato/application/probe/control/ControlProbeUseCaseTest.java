@@ -1,10 +1,8 @@
-package br.com.elo7.sonda.candidato.application.probe.create;
+package br.com.elo7.sonda.candidato.application.probe.control;
 
 import br.com.elo7.sonda.candidato.application.exceptions.NotFoundException;
 import br.com.elo7.sonda.candidato.application.probe.move.MoveProbeUseCase;
-import br.com.elo7.sonda.candidato.domain.exceptions.DomainException;
 import br.com.elo7.sonda.candidato.domain.planet.Planet;
-import br.com.elo7.sonda.candidato.domain.planet.PlanetGateway;
 import br.com.elo7.sonda.candidato.domain.probe.Command;
 import br.com.elo7.sonda.candidato.domain.probe.Direction;
 import br.com.elo7.sonda.candidato.domain.probe.Probe;
@@ -24,10 +22,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateProbeUseCaseTest {
+public class ControlProbeUseCaseTest {
 
     @InjectMocks
-    private DefaultCreateProbeUseCase useCase;
+    private DefaultControlProbeUseCase useCase;
 
     @Mock
     private MoveProbeUseCase moveProbeUseCase;
@@ -35,33 +33,28 @@ public class CreateProbeUseCaseTest {
     @Mock
     private ProbeGateway gateway;
 
-    @Mock
-    private PlanetGateway planetGateway;
-
     @Test
-    public void givenAValidCommand_whenCallsCreateProbe_shouldReturnProbeOutput() {
+    public void givenAValidCommand_whenCallsControlProbe_shouldReturnProbeOutput() {
         final var expectedPlanet = Optional.of(new Planet(1, 10, 10));
         final var expectedProbe = Probe.newProbe(1, 1, Direction.NORTH, expectedPlanet.get());
 
         final var movementCommand = Collections.<Command>emptyList();
-        final var command = CreateProbeCommand.with(
-                expectedProbe.getPositionX(),
-                expectedProbe.getPositionY(),
-                expectedProbe.getDirection(),
-                movementCommand,
-                expectedPlanet.get().getId());
+        final var command = ControlProbeCommand.with(
+                expectedProbe.getId(),
+                movementCommand
+        );
 
-        Mockito.when(planetGateway.findById(Mockito.anyInt())).thenReturn(expectedPlanet);
+        Mockito.when(gateway.findById(Mockito.anyInt())).thenReturn(Optional.of(expectedProbe));
         Mockito.when(moveProbeUseCase.execute(Mockito.any())).thenReturn(expectedProbe);
-        Mockito.when(gateway.create(Mockito.any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
+        Mockito.when(gateway.update(Mockito.any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         final var actualOutput = useCase.execute(command);
         Assertions.assertNotNull(actualOutput);
 
-        Mockito.verify(planetGateway, Mockito.times(1))
+        Mockito.verify(gateway, Mockito.times(1))
                 .findById(ArgumentMatchers.intThat(
-                        planetId ->
-                                Objects.equals(expectedPlanet.get().getId(), planetId))
+                        probeId ->
+                                Objects.equals(expectedProbe.getId(), probeId))
                 );
 
         Mockito.verify(moveProbeUseCase, Mockito.times(1))
@@ -74,7 +67,7 @@ public class CreateProbeUseCaseTest {
                 ));
 
         Mockito.verify(gateway, Mockito.times(1))
-                .create(ArgumentMatchers.argThat(
+                .update(ArgumentMatchers.argThat(
                         probe ->
                                 Objects.equals(expectedProbe.getPositionX(), probe.getPositionX())
                                         && Objects.equals(expectedProbe.getPositionY(), probe.getPositionY())
@@ -84,23 +77,23 @@ public class CreateProbeUseCaseTest {
     }
 
     @Test
-    public void givenAInvalidCommandPlanetId_whenCallsCreateProbe_shouldReturnNotFoundException() {
-        final var expectedProbe = Probe.newProbe(1, 1, Direction.NORTH, null);
-        final var expectedErrorMessage = "Planet with ID 0 was not found";
-        final var movementCommand = Collections.<Command>emptyList();
-        final var command = CreateProbeCommand.with(
-                expectedProbe.getPositionX(),
-                expectedProbe.getPositionY(),
-                expectedProbe.getDirection(),
-                movementCommand,
-                0);
+    public void givenAInvalidCommandProbeId_whenCallsControlProbe_shouldReturnNotFoundException() {
+        final var expectedErrorMessage = "Probe with ID 0 was not found";
 
-        Mockito.when(planetGateway.findById(Mockito.anyInt())).thenReturn(Optional.empty());
+        final var probeIdCommand = 0;
+        final var movementCommand = Collections.<Command>emptyList();
+        final var command = ControlProbeCommand.with(
+                probeIdCommand,
+                movementCommand
+        );
+
+        Mockito.when(gateway.findById(Mockito.anyInt())).thenReturn(Optional.empty());
 
         final var actualException = Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(command));
 
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
-        Mockito.verify(planetGateway, Mockito.times(1)).findById(Mockito.anyInt());
-        Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
+        Mockito.verify(gateway, Mockito.times(1)).findById(Mockito.anyInt());
+        Mockito.verify(moveProbeUseCase, Mockito.times(0)).execute(Mockito.any());
+        Mockito.verify(gateway, Mockito.times(0)).update(Mockito.any());
     }
 }
