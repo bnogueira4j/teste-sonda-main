@@ -5,8 +5,11 @@ import br.com.elo7.sonda.candidato.application.planet.create.CreatePlanetCommand
 import br.com.elo7.sonda.candidato.application.planet.create.CreatePlanetUseCase;
 import br.com.elo7.sonda.candidato.application.planet.retrieve.get.GetPlanetByIdUseCase;
 import br.com.elo7.sonda.candidato.application.planet.retrieve.list.ListPlanetsUseCase;
+import br.com.elo7.sonda.candidato.application.planet.update.UpdatePlanetCommand;
+import br.com.elo7.sonda.candidato.application.planet.update.UpdatePlanetUseCase;
 import br.com.elo7.sonda.candidato.infraestructure.api.PlanetAPI;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.CreatePlanetApiInput;
+import br.com.elo7.sonda.candidato.infraestructure.planet.models.PlanetApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.PlanetApiOutput;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +27,17 @@ public class PlanetController implements PlanetAPI {
     private CreatePlanetUseCase createPlanetUseCase;
     private ListPlanetsUseCase listPlanetsUseCase;
     private GetPlanetByIdUseCase getPlanetByIdUseCase;
+    private UpdatePlanetUseCase updatePlanetUseCase;
 
-    public PlanetController(CreatePlanetUseCase createPlanetUseCase, ListPlanetsUseCase listPlanetsUseCase, GetPlanetByIdUseCase getPlanetByIdUseCase) {
+    public PlanetController(
+            CreatePlanetUseCase createPlanetUseCase,
+            ListPlanetsUseCase listPlanetsUseCase,
+            GetPlanetByIdUseCase getPlanetByIdUseCase,
+            UpdatePlanetUseCase updatePlanetUseCase) {
         this.createPlanetUseCase = createPlanetUseCase;
         this.listPlanetsUseCase = listPlanetsUseCase;
         this.getPlanetByIdUseCase = getPlanetByIdUseCase;
+        this.updatePlanetUseCase = updatePlanetUseCase;
     }
 
     @GetMapping("/{id}")
@@ -46,5 +55,11 @@ public class PlanetController implements PlanetAPI {
         final var command = CreatePlanetCommand.with(input.width(), input.height());
         final var output = createPlanetUseCase.execute(command);
         return ResponseEntity.created(URI.create("/planet/" + output.id())).body(output.id());
+    }
+
+    @Override
+    public ResponseEntity<?> update(PlanetApiInput input) {
+        final var command = UpdatePlanetCommand.with(input.id(), input.width(), input.height());
+        return ResponseEntity.ok(updatePlanetUseCase.execute(command));
     }
 }

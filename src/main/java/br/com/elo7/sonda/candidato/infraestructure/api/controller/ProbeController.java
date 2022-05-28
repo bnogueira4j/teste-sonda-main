@@ -53,7 +53,7 @@ public class ProbeController implements ProbeAPI {
     public ResponseEntity<?> register(@RequestBody final CreateProbeApiInput input) {
         final var command = CreateProbeCommand.with(input.positionX(), input.positionY(), input.direction(), input.commands(), input.planetId());
         final var output = createProbeUseCase.execute(command);
-        return ResponseEntity.created(URI.create("/planet/" + output.id())).body(output.id());
+        return ResponseEntity.created(URI.create("/probe/" + output.id())).body(output.id());
     }
 
     @PostMapping("/{id}/control")

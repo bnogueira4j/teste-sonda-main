@@ -14,34 +14,40 @@ public class Planet extends Entity {
     private int height;
 
     public static Planet newPlanet(final int width, final int height) {
-		return new Planet(width, height);
+        return new Planet(width, height);
     }
 
-	private Planet(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
+    private Planet(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
 
-	public Planet(int id, int width, int height) {
-		this.id = id;
-		this.width = width;
-		this.height = height;
-	}
+    public Planet(int id, int width, int height) {
+        this.id = id;
+        this.width = width;
+        this.height = height;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public int getWidth() {
-		return width;
-	}
+    public int getWidth() {
+        return width;
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public int getHeight() {
+        return height;
+    }
 
-	@Override
-	public void validate() {
-		new PlanetValidator(this).validate();
-	}
+    @Override
+    public void validate() {
+        new PlanetValidator(this).validate();
+    }
+
+    public Planet update(final int width, final int height) {
+        this.width = width;
+        this.height = height;
+        return this;
+    }
 }

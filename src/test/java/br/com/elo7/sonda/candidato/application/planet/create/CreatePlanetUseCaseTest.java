@@ -46,7 +46,7 @@ public class CreatePlanetUseCaseTest {
     }
 
     @Test
-    public void givenAInvalidWidth_whenCallsCreatePlanet_shouldReturnPlanetId() {
+    public void givenAInvalidWidth_whenCallsCreatePlanet_shouldReturnDomainException() {
         final var expectedWidth = 0;
         final var expectedHeight = 10;
         final var expectedErrorMessage = "'width' should not be less or equal zero";
@@ -61,7 +61,7 @@ public class CreatePlanetUseCaseTest {
     }
 
     @Test
-    public void givenAInValidHeight_whenCallsCreatePlanet_shouldReturnPlanetId() {
+    public void givenAInValidHeight_whenCallsCreatePlanet_shouldReturnDomainException() {
         final var expectedWidth = 10;
         final var expectedHeight = -2;
         final var expectedErrorMessage = "'height' should not be less or equal zero";
