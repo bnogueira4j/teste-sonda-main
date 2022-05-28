@@ -37,4 +37,9 @@ public class PlanetGatewayPostgres implements PlanetGateway {
     public Planet create(final Planet planet) {
         return repository.save(PlanetEntity.from(planet)).toAggregate();
     }
+
+    @Override
+    public Planet update(Planet planet) {
+        return repository.save(PlanetEntity.from(planet)).toAggregate();
+    }
 }

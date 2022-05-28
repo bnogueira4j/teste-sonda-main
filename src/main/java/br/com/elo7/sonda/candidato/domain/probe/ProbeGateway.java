@@ -6,9 +6,7 @@ import java.util.Optional;
 public interface ProbeGateway {
 
     List<Probe> findAll();
-
     Optional<Probe> findById(int id);
-
     Probe create(Probe probe);
     Probe update(Probe probe);
 }

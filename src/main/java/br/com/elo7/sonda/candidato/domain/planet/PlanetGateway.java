@@ -10,4 +10,6 @@ public interface PlanetGateway {
     Optional<Planet> findById(int id);
 
     Planet create(Planet planet);
+
+    Planet update(Planet planet);
 }
