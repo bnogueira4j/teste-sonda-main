@@ -34,4 +34,9 @@ public class ProbeGatewayPostgres implements ProbeGateway {
     public Probe create(final Probe probe) {
         return repository.save(ProbeEntity.from(probe)).toAggregate();
     }
+
+    @Override
+    public Probe update(Probe probe) {
+        return repository.save(ProbeEntity.from(probe)).toAggregate();
+    }
 }

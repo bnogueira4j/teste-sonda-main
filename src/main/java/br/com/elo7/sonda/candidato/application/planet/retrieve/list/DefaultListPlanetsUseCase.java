@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.application.planet.retrieve.list;
 
+import br.com.elo7.sonda.candidato.application.planet.common.PlanetOutput;
 import br.com.elo7.sonda.candidato.domain.planet.PlanetGateway;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class DefaultListPlanetsUseCase extends ListPlanetsUseCase {
     }
 
     @Override
-    public List<PlanetListOutput> execute() {
-        return gateway.findAll().stream().map(PlanetListOutput::from).toList();
+    public List<PlanetOutput> execute() {
+        return gateway.findAll().stream().map(PlanetOutput::from).toList();
     }
 }

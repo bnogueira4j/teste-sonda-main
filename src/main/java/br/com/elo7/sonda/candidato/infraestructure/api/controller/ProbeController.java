@@ -1,11 +1,14 @@
 package br.com.elo7.sonda.candidato.infraestructure.api.controller;
 
+import br.com.elo7.sonda.candidato.application.probe.common.ProbeOutput;
+import br.com.elo7.sonda.candidato.application.probe.control.ControlProbeCommand;
+import br.com.elo7.sonda.candidato.application.probe.control.ControlProbeUseCase;
 import br.com.elo7.sonda.candidato.application.probe.create.CreateProbeCommand;
 import br.com.elo7.sonda.candidato.application.probe.create.CreateProbeUseCase;
 import br.com.elo7.sonda.candidato.application.probe.retrieve.get.GetProbeByIdUseCase;
 import br.com.elo7.sonda.candidato.application.probe.retrieve.list.ListProbesUseCase;
-import br.com.elo7.sonda.candidato.application.probe.retrieve.list.ProbeListOutput;
 import br.com.elo7.sonda.candidato.infraestructure.api.ProbeAPI;
+import br.com.elo7.sonda.candidato.infraestructure.probe.models.ControlProbeApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.probe.models.CreateProbeApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.probe.models.ProbeApiOutput;
 import org.springframework.http.ResponseEntity;
@@ -24,20 +27,25 @@ public class ProbeController implements ProbeAPI {
     private CreateProbeUseCase createProbeUseCase;
     private ListProbesUseCase listProbesUseCase;
     private GetProbeByIdUseCase getProbeByIdUseCase;
+    private ControlProbeUseCase controlProbeUseCase;
 
-    public ProbeController(final CreateProbeUseCase createProbeUseCase, final ListProbesUseCase listProbesUseCase, final GetProbeByIdUseCase getProbeByIdUseCase) {
+    public ProbeController(final CreateProbeUseCase createProbeUseCase,
+                           final ListProbesUseCase listProbesUseCase,
+                           final GetProbeByIdUseCase getProbeByIdUseCase,
+                           final ControlProbeUseCase controlProbeUseCase) {
         this.createProbeUseCase = createProbeUseCase;
         this.listProbesUseCase = listProbesUseCase;
         this.getProbeByIdUseCase = getProbeByIdUseCase;
+        this.controlProbeUseCase = controlProbeUseCase;
     }
 
     @GetMapping("/{id}")
-    public ProbeApiOutput getById(@PathVariable final int id) {
-        return ProbeApiOutput.from(getProbeByIdUseCase.execute(id));
+    public ResponseEntity<ProbeApiOutput> getById(@PathVariable final int id) {
+        return ResponseEntity.ok(ProbeApiOutput.from(getProbeByIdUseCase.execute(id)));
     }
 
     @GetMapping
-    public ResponseEntity<List<ProbeListOutput>> findAll() {
+    public ResponseEntity<List<ProbeOutput>> findAll() {
         return ResponseEntity.ok(listProbesUseCase.execute());
     }
 
@@ -46,5 +54,11 @@ public class ProbeController implements ProbeAPI {
         final var command = CreateProbeCommand.with(input.positionX(), input.positionY(), input.direction(), input.commands(), input.planetId());
         final var output = createProbeUseCase.execute(command);
         return ResponseEntity.created(URI.create("/planet/" + output.id())).body(output.id());
+    }
+
+    @PostMapping("/{id}/control")
+    public ResponseEntity<ProbeApiOutput> control(@PathVariable final int id, ControlProbeApiInput input) {
+        final var command = ControlProbeCommand.with(id, input.commands());
+        return ResponseEntity.ok(ProbeApiOutput.from(controlProbeUseCase.execute(command)));
     }
 }

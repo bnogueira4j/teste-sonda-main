@@ -28,7 +28,6 @@ public class CreatePlanetUseCaseTest {
     public void givenAValidCommand_whenCallsCreatePlanet_shouldReturnPlanetId() {
         final var expectedWidth = 10;
         final var expectedHeight = 10;
-        final var expectedPlanet = Planet.newPlanet(expectedWidth, expectedHeight);
 
         final var command = CreatePlanetCommand.with(expectedWidth, expectedHeight);
 
@@ -47,7 +46,7 @@ public class CreatePlanetUseCaseTest {
     }
 
     @Test
-    public void givenAInValidWidth_whenCallsCreatePlanet_shouldReturnPlanetId() {
+    public void givenAInvalidWidth_whenCallsCreatePlanet_shouldReturnPlanetId() {
         final var expectedWidth = 0;
         final var expectedHeight = 10;
         final var expectedErrorMessage = "'width' should not be less or equal zero";
@@ -57,6 +56,8 @@ public class CreatePlanetUseCaseTest {
 
         final var actualException = Assertions.assertThrows(DomainException.class, () -> useCase.execute(command));
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+
+        Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
     }
 
     @Test
@@ -70,6 +71,8 @@ public class CreatePlanetUseCaseTest {
 
         final var actualException = Assertions.assertThrows(DomainException.class, () -> useCase.execute(command));
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+
+        Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
     }
 
 }

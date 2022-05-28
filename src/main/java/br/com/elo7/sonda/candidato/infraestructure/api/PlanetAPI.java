@@ -1,6 +1,6 @@
 package br.com.elo7.sonda.candidato.infraestructure.api;
 
-import br.com.elo7.sonda.candidato.application.planet.retrieve.list.PlanetListOutput;
+import br.com.elo7.sonda.candidato.application.planet.common.PlanetOutput;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.CreatePlanetApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.PlanetApiOutput;
 import org.springframework.http.MediaType;
@@ -20,7 +20,7 @@ public interface PlanetAPI {
     public PlanetApiOutput getById(@PathVariable int id);
 
     @GetMapping
-    public ResponseEntity<List<PlanetListOutput>> findAll();
+    public ResponseEntity<List<PlanetOutput>> findAll();
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,

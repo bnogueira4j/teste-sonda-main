@@ -10,4 +10,5 @@ public interface ProbeGateway {
     Optional<Probe> findById(int id);
 
     Probe create(Probe probe);
+    Probe update(Probe probe);
 }

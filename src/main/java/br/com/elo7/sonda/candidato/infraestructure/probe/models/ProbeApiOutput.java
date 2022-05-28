@@ -1,6 +1,6 @@
 package br.com.elo7.sonda.candidato.infraestructure.probe.models;
 
-import br.com.elo7.sonda.candidato.application.probe.retrieve.get.ProbeOutput;
+import br.com.elo7.sonda.candidato.application.probe.common.ProbeOutput;
 import br.com.elo7.sonda.candidato.domain.probe.Direction;
 
 public record ProbeApiOutput(int id,

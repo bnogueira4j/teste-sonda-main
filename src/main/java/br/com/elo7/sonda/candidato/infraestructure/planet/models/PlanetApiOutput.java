@@ -1,6 +1,6 @@
 package br.com.elo7.sonda.candidato.infraestructure.planet.models;
 
-import br.com.elo7.sonda.candidato.application.planet.retrieve.get.PlanetOutput;
+import br.com.elo7.sonda.candidato.application.planet.common.PlanetOutput;
 
 public record PlanetApiOutput(int id, int width, int height) {
 
