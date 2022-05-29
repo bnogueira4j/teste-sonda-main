@@ -40,17 +40,17 @@ public class PlanetController implements PlanetAPI {
         this.updatePlanetUseCase = updatePlanetUseCase;
     }
 
-    @GetMapping("/{id}")
+    @Override
     public PlanetApiOutput getById(@PathVariable final int id) {
         return PlanetApiOutput.from(getPlanetByIdUseCase.execute(id));
     }
 
-    @GetMapping
+    @Override
     public ResponseEntity<List<PlanetOutput>> findAll() {
         return ResponseEntity.ok(listPlanetsUseCase.execute());
     }
 
-    @PostMapping
+    @Override
     public ResponseEntity<?> register(@RequestBody final CreatePlanetApiInput input) {
         final var command = CreatePlanetCommand.with(input.width(), input.height());
         final var output = createPlanetUseCase.execute(command);

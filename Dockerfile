@@ -1,9 +1,15 @@
+# Build stage
+FROM maven:3.8.3-openjdk-17 AS build
+COPY src /app/src
+COPY pom.xml /app
+RUN mvn -f /app/pom.xml clean package
+
+
+# Package stage
 FROM openjdk:17-slim-buster
 
-WORKDIR /app
+WORKDIR /app/target
 
-RUN mvn -v
-RUN mvn clean install -DskipTests
-COPY target/sonda.candidato-*.jar app.jar
+COPY --from=build /app/target/sonda.candidato-*.jar /app/target/sonda.jar
 
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["java","-jar","/app/target/sonda.jar"]

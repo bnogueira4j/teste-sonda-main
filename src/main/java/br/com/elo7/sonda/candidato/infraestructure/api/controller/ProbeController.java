@@ -39,24 +39,24 @@ public class ProbeController implements ProbeAPI {
         this.controlProbeUseCase = controlProbeUseCase;
     }
 
-    @GetMapping("/{id}")
+    @Override
     public ResponseEntity<ProbeApiOutput> getById(@PathVariable final int id) {
         return ResponseEntity.ok(ProbeApiOutput.from(getProbeByIdUseCase.execute(id)));
     }
 
-    @GetMapping
+    @Override
     public ResponseEntity<List<ProbeOutput>> findAll() {
         return ResponseEntity.ok(listProbesUseCase.execute());
     }
 
-    @PostMapping
+    @Override
     public ResponseEntity<?> register(@RequestBody final CreateProbeApiInput input) {
         final var command = CreateProbeCommand.with(input.positionX(), input.positionY(), input.direction(), input.commands(), input.planetId());
         final var output = createProbeUseCase.execute(command);
         return ResponseEntity.created(URI.create("/probe/" + output.id())).body(output.id());
     }
 
-    @PostMapping("/{id}/control")
+    @Override
     public ResponseEntity<ProbeApiOutput> control(@PathVariable final int id, ControlProbeApiInput input) {
         final var command = ControlProbeCommand.with(id, input.commands());
         return ResponseEntity.ok(ProbeApiOutput.from(controlProbeUseCase.execute(command)));
