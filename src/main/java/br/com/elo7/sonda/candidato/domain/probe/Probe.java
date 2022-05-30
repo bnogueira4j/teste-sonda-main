@@ -44,7 +44,7 @@ public class Probe {
         return positionX;
     }
 
-    public void setPositionX(int positionX) {
+    private void setPositionX(int positionX) {
         this.positionX = positionX;
     }
 
@@ -52,7 +52,7 @@ public class Probe {
         return positionY;
     }
 
-    public void setPositionY(int positionY) {
+    private void setPositionY(int positionY) {
         this.positionY = positionY;
     }
 
@@ -60,11 +60,28 @@ public class Probe {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
+    private void setDirection(Direction direction) {
         this.direction = direction;
     }
 
     public Planet getPlanet() {
         return planet;
+    }
+
+    public void turnLeft() {
+        this.setDirection(this.getDirection().turnLeft());
+    }
+
+    public void turnRight() {
+        this.setDirection(this.getDirection().turnRight());
+    }
+
+    public void moveForward() {
+        switch (this.getDirection()) {
+            case NORTH -> this.setPositionY(++positionY);
+            case WEST -> this.setPositionX(--positionX);
+            case SOUTH -> this.setPositionY(--positionY);
+            case EAST -> this.setPositionX(++positionX);
+        }
     }
 }
