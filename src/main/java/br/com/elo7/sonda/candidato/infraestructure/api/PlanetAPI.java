@@ -1,6 +1,5 @@
 package br.com.elo7.sonda.candidato.infraestructure.api;
 
-import br.com.elo7.sonda.candidato.application.planet.common.PlanetOutput;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.CreatePlanetApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.PlanetApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.PlanetApiOutput;
@@ -8,6 +7,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @RequestMapping(value = "planet")
 @Tag(name = "Planet")
+@CacheConfig(cacheNames = "planetCache")
 public interface PlanetAPI {
 
     @GetMapping(value = "/{id}",
@@ -31,6 +34,7 @@ public interface PlanetAPI {
             @ApiResponse(responseCode = "200", description = "Get planet by id successfully"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
+    @Cacheable(cacheNames = "planet", key="#id")
     PlanetApiOutput getById(@PathVariable int id);
 
     @GetMapping(
@@ -40,7 +44,8 @@ public interface PlanetAPI {
             @ApiResponse(responseCode = "200", description = "Listed all planets successfully"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
-    ResponseEntity<List<PlanetOutput>> findAll();
+    @Cacheable(cacheNames = "planets")
+    List<?> findAll();
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -51,6 +56,7 @@ public interface PlanetAPI {
             @ApiResponse(responseCode = "201", description = "Created planet successfully"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
+    @CacheEvict(cacheNames = {"planet", "planets"}, allEntries = true)
     ResponseEntity<?> register(@RequestBody CreatePlanetApiInput input);
 
     @PutMapping(
@@ -62,5 +68,6 @@ public interface PlanetAPI {
             @ApiResponse(responseCode = "200", description = "Updated a planet successfully"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
+    @CacheEvict(cacheNames = {"planet", "planets"}, allEntries = true)
     ResponseEntity<?> update(@RequestBody PlanetApiInput input);
 }

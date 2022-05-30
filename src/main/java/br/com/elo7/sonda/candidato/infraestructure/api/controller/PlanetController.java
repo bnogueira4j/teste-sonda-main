@@ -1,6 +1,5 @@
 package br.com.elo7.sonda.candidato.infraestructure.api.controller;
 
-import br.com.elo7.sonda.candidato.application.planet.common.PlanetOutput;
 import br.com.elo7.sonda.candidato.application.planet.create.CreatePlanetCommand;
 import br.com.elo7.sonda.candidato.application.planet.create.CreatePlanetUseCase;
 import br.com.elo7.sonda.candidato.application.planet.retrieve.get.GetPlanetByIdUseCase;
@@ -12,9 +11,7 @@ import br.com.elo7.sonda.candidato.infraestructure.planet.models.CreatePlanetApi
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.PlanetApiInput;
 import br.com.elo7.sonda.candidato.infraestructure.planet.models.PlanetApiOutput;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,8 +43,8 @@ public class PlanetController implements PlanetAPI {
     }
 
     @Override
-    public ResponseEntity<List<PlanetOutput>> findAll() {
-        return ResponseEntity.ok(listPlanetsUseCase.execute());
+    public List<?> findAll() {
+        return listPlanetsUseCase.execute().stream().map(PlanetApiOutput::from).toList();
     }
 
     @Override
@@ -60,6 +57,6 @@ public class PlanetController implements PlanetAPI {
     @Override
     public ResponseEntity<?> update(PlanetApiInput input) {
         final var command = UpdatePlanetCommand.with(input.id(), input.width(), input.height());
-        return ResponseEntity.ok(updatePlanetUseCase.execute(command));
+        return ResponseEntity.ok(PlanetApiOutput.from(updatePlanetUseCase.execute(command)));
     }
 }
