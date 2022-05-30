@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,7 @@ import java.util.List;
 
 @RequestMapping(value = "probe")
 @Tag(name = "Probe")
+@CacheConfig(cacheNames = "probeCache")
 public interface ProbeAPI {
 
     @GetMapping(value = "/{id}",
@@ -30,7 +34,8 @@ public interface ProbeAPI {
             @ApiResponse(responseCode = "200", description = "Get probe by id successfully"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
-    ResponseEntity<ProbeApiOutput> getById(@PathVariable int id);
+    @Cacheable(cacheNames = "probe", key="#id")
+    ProbeApiOutput getById(@PathVariable int id);
 
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,7 +44,8 @@ public interface ProbeAPI {
             @ApiResponse(responseCode = "200", description = "Listed all probes successfully"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
-    ResponseEntity<List<ProbeOutput>> findAll();
+    @Cacheable(cacheNames = "probes")
+    List<?> findAll();
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -50,6 +56,7 @@ public interface ProbeAPI {
             @ApiResponse(responseCode = "201", description = "Created probe successfully"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
+    @CacheEvict(cacheNames = {"probe", "probes"}, allEntries = true)
     ResponseEntity<?> register(@RequestBody CreateProbeApiInput input);
 
     @PostMapping(value = "/{id}/control",
@@ -61,5 +68,6 @@ public interface ProbeAPI {
             @ApiResponse(responseCode = "200", description = "Controlled a probe successfully"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
+    @CacheEvict(cacheNames = {"probe", "probes"}, allEntries = true)
     ResponseEntity<ProbeApiOutput> control(@PathVariable int id, @RequestBody ControlProbeApiInput input);
 }

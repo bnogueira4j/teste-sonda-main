@@ -40,13 +40,13 @@ public class ProbeController implements ProbeAPI {
     }
 
     @Override
-    public ResponseEntity<ProbeApiOutput> getById(@PathVariable final int id) {
-        return ResponseEntity.ok(ProbeApiOutput.from(getProbeByIdUseCase.execute(id)));
+    public ProbeApiOutput getById(@PathVariable final int id) {
+        return ProbeApiOutput.from(getProbeByIdUseCase.execute(id));
     }
 
     @Override
-    public ResponseEntity<List<ProbeOutput>> findAll() {
-        return ResponseEntity.ok(listProbesUseCase.execute());
+    public List<?> findAll() {
+        return listProbesUseCase.execute().stream().map(ProbeApiOutput::from).toList();
     }
 
     @Override
